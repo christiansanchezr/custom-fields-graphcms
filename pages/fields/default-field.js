@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 const DefaultField = () => {
     const { value, onChange } = useFieldExtension(); 
 
-    return <input type='checkbox' value={value} onChange={({ target: { value: val } }) => onChange(val)}></input>
+    return <input type='image' />
 }
 
 const DefaultFieldDeclaration = {
