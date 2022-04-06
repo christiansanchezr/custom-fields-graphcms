@@ -1,0 +1,21 @@
+trigger:
+  - develop
+  - master
+  - staging
+  - ephemeral/*
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: TeamCobra/autoweb-devops
+pool:
+  vmImage: ubuntu-latest
+parameters:
+  - name: 'projects'
+    type: object
+    default:
+      - GRAPHCMS
+stages:
+  - template: NewPipelines/controller.yml@templates
+    parameters:
+      projects: ${{parameters.projects}}
