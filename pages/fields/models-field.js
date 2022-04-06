@@ -16,6 +16,7 @@ const ModelField = () => {
                     console.log(state);
                     if (state.values.makeField != null) {
                         const modelsResponse = await getModelsByMake(state.values.makeField);
+                        console.log(modelsResponse[0]);
                         setModels(modelsResponse);
                     }
                 },
@@ -25,7 +26,7 @@ const ModelField = () => {
         return () => unsubscribe();
     }, [subscribeToFieldState])
     
-    return <select value={value} onChange={({ target: { value: val } }) => onChange(val)}>
+    return <select style={{ padding: '7px', width: '100%', color: 'rgb(9, 14, 36)', border: '1px solid rgb(218, 222, 237)', lineHeight: '24px', fontSize: '15px', boxShadow: 'rgb(0 0 0 / 5%) 0px 2px 4px' }} value={value} onChange={({ target: { value: val } }) => onChange(val)}>
         <option value='' key="0">Select a model</option>
         {models.map((model, index) => (
             <option value={model.seoName} key={index} id={model.seoName}>{model.name}</option>

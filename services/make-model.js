@@ -18,9 +18,27 @@ export const getModelsByMake = async (seoMakeName) => {
     }
 }
 
+export const getModelInfo = async (seoMakeName, seoModelName, year) => {
+    try {
+        const response = await fetch(`${config.vspUrl}/model/${seoMakeName}/${seoModelName}/${year}`);
+        return response.json();
+    } catch {
+        return {};
+    }
+}
+
 export const getYearsByMakeModel = async (seoMakeName, seoModelName) => {
     try {
         const response = await fetch(`${config.vspUrl}/modelyears/${seoMakeName}/${seoModelName}?newCarOnly=true`);
+        return response.json();
+    } catch {
+        return [];
+    }
+}
+
+export const getModelReview = async (seoMakeName, seoModelName, year) => {
+    try {
+        const response = await fetch(`${config.vspUrl}/modelReview/${seoMakeName}/${seoModelName}/${year}?includeLatestIfNotFound=false`);
         return response.json();
     } catch {
         return [];
