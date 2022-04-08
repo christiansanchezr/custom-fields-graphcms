@@ -6,6 +6,7 @@ import { config } from "../../utilities/config";
 
 const ImageField = () => {
     const { value, onChange, form: { subscribeToFieldState, subscribeToFormState } } = useFieldExtension(); 
+    const { form: {getState} } = useFormSidebarExtension();
 
     const [ image, setImage ] = useState('');
 
@@ -19,10 +20,10 @@ const ImageField = () => {
             await subscribeToFormState(
                 async (state) => {
 
-                    if (state.values.makeField !== null && state.values.modelsField != null && state.values.yearField != null) {
-                        const modelResponse = await getModelInfo(state.values.makeField, state.values.modelsField, state.values.yearField);
-                        if (state.values.modelImage == null) {
-                            setImage(modelResponse.imageMedium);
+                    if (state.values.makeField !== null && state.values.modelField != null && state.values.yearField != null) {
+                        const modelResponse = await getModelInfo(state.values.makeField, state.values.modelField, state.values.yearField);
+                        setImage(modelResponse.imageMedium);
+                        if (state.values.imageField == null) {
                             console.log(config.graphcmsToken);
                             const uploadAsset = await fetch(`https://api-us-east-1.graphcms.com/v2/ckpr4gqzskmhu01w6asxnb4bk/master/upload`, {
                                 method: 'POST',
@@ -35,8 +36,6 @@ const ImageField = () => {
                             const uploadAssetResponse = await uploadAsset.json();
                             console.log(uploadAssetResponse);
                             changeAsset(uploadAssetResponse);
-                        } else {
-                            setImage(state.values.modelImage.url);
                         }
                     }
                 },
@@ -45,6 +44,19 @@ const ImageField = () => {
         }
         return () => unsubscribe();
     }, [subscribeToFieldState])
+
+    const formState = async () => {
+
+        const { values } = await getState();
+
+        if (values.imageField != null) {
+            setImage(values.imageField.url);
+        }
+    }
+
+    useEffect(() => {
+        formState();
+    }, [])
     
     return <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <img src={image} style={{ maxWidth: '256px' }}/>
