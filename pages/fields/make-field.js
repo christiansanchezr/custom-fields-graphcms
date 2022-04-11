@@ -19,6 +19,12 @@ const MakesField = ({ makes }) => {
     </select>
 }
 
+useEffect(() => {
+    const makesResponse = await getMakes();
+
+    console.log(makesResponse);
+}, [])
+
 const MakesFieldDeclaration = {
     extensionType: 'field',
     fieldType: FieldExtensionType.STRING,
