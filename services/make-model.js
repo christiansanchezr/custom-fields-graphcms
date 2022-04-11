@@ -1,8 +1,8 @@
-import { config } from "../utilities/config";
+const apiURL = 'https://uc-dev-core-apim.azure-api.net/vsp/qa';
 
 export const getMakes = async () => {
     try {
-        const response = await fetch(`${config.vspUrl}/makes?newCarOnly=true`);
+        const response = await fetch(`${apiURL}/makes?newCarOnly=true`);
         return response.json();
     } catch {
         return [];
@@ -11,7 +11,7 @@ export const getMakes = async () => {
 
 export const getModelsByMake = async (seoMakeName) => {
     try {
-        const response = await fetch(`${config.vspUrl}/newcar/models/${seoMakeName}`);
+        const response = await fetch(`${apiURL}/newcar/models/${seoMakeName}`);
         return response.json();
     } catch {
         return [];
@@ -20,7 +20,7 @@ export const getModelsByMake = async (seoMakeName) => {
 
 export const getModelInfo = async (seoMakeName, seoModelName, year) => {
     try {
-        const response = await fetch(`${config.vspUrl}/model/${seoMakeName}/${seoModelName}/${year}`);
+        const response = await fetch(`${apiURL}/model/${seoMakeName}/${seoModelName}/${year}`);
         return response.json();
     } catch {
         return {};
@@ -29,7 +29,7 @@ export const getModelInfo = async (seoMakeName, seoModelName, year) => {
 
 export const getYearsByMakeModel = async (seoMakeName, seoModelName) => {
     try {
-        const response = await fetch(`${config.vspUrl}/modelyears/${seoMakeName}/${seoModelName}?newCarOnly=true`);
+        const response = await fetch(`${apiURL}/modelyears/${seoMakeName}/${seoModelName}?newCarOnly=true`);
         return response.json();
     } catch {
         return [];
@@ -38,7 +38,7 @@ export const getYearsByMakeModel = async (seoMakeName, seoModelName) => {
 
 export const getModelReview = async (seoMakeName, seoModelName, year) => {
     try {
-        const response = await fetch(`${config.vspUrl}/modelReview/${seoMakeName}/${seoModelName}/${year}?includeLatestIfNotFound=false`);
+        const response = await fetch(`${apiURL}/modelReview/${seoMakeName}/${seoModelName}/${year}?includeLatestIfNotFound=false`);
         return response.json();
     } catch {
         return [];
