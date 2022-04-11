@@ -33,6 +33,8 @@ const Extension = ({ makes }) => {
 
     if (!extensionUid) return null;
 
+    console.log(makes);
+
     return (
         <Wrapper uid={extensionUid} declaration={MakesFieldDeclaration}>
             <MakesField makes={makes}/>
@@ -42,6 +44,8 @@ const Extension = ({ makes }) => {
 
 export const getStaticProps = async () => {
     const makesResponse = await getMakes();
+
+    console.log(makesResponse);
 
     return {
         props: {
