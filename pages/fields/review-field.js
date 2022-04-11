@@ -41,7 +41,6 @@ const ReviewField = () => {
     }, [])
     
     return <textarea rows={8} style={{ width: '100%', color: 'rgb(9, 14, 36)', border: '1px solid rgb(218, 222, 237)', lineHeight: '24px', fontSize: '15px', boxShadow: 'rgb(0 0 0 / 5%) 0px 2px 4px' }} defaultValue={review != null ? review.modelOverview : ''} value={value} onChange={({ target: { value: val } }) => onChange(val)}>
-        {review != null ? review.modelOverview : ''}
     </textarea>
 }
 
