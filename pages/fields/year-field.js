@@ -1,12 +1,13 @@
 import { FieldExtensionFeature, FieldExtensionType, useFieldExtension, useFormSidebarExtension, useUiExtension, Wrapper } from "@graphcms/uix-react-sdk"
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getYearsByMakeModel } from "../../services/make-model";
+import { getYearsByMakeModel, getModelInfo } from "../../services/make-model";
+import { config } from "../../utilities/config";
 
 const YearsField = () => {
     const { value, onChange, form: { subscribeToFieldState, subscribeToFormState } } = useFieldExtension(); 
 
-    const { form: {getState} } = useFormSidebarExtension();
+    const { form: {getState, change} } = useFormSidebarExtension();
 
     const [ years, setYears ] = useState([]);
 
@@ -39,8 +40,30 @@ const YearsField = () => {
     useEffect(() => {
         formState();
     }, [])
+
+    const changeValue = async (val) => {
+        onChange(val);
+
+        /*
+        const { values } = await getState();
+        const modelResponse = await getModelInfo(values.makeField, values.modelField, val);
+        if (values.imageField == null) {
+            const uploadAsset = await fetch(`https://api-us-east-1.graphcms.com/v2/ckpr4gqzskmhu01w6asxnb4bk/master/upload`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${config.graphcmsToken}`,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `url=${encodeURIComponent(modelResponse.imageMedium)}`
+            });
+            const uploadAssetResponse = await uploadAsset.json();
+            change('imageField', uploadAssetResponse);
+        
+        }
+        */
+    }
     
-    return <select style={{ padding: '7px', width: '100%', color: 'rgb(9, 14, 36)', border: '1px solid rgb(218, 222, 237)', lineHeight: '24px', fontSize: '15px', boxShadow: 'rgb(0 0 0 / 5%) 0px 2px 4px' }} value={value} onChange={({ target: { value: val } }) => onChange(val)}>
+    return <select style={{ padding: '7px', width: '100%', color: 'rgb(9, 14, 36)', border: '1px solid rgb(218, 222, 237)', lineHeight: '24px', fontSize: '15px', boxShadow: 'rgb(0 0 0 / 5%) 0px 2px 4px' }} value={value != null ? value : ''} onChange={({ target: { value: val } }) => changeValue(val)}>
         <option value='' key="0">Select year</option>
         {years.map((year, index) => (
             <option value={year} key={index+1}>{year}</option>

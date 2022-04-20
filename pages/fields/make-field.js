@@ -11,7 +11,7 @@ const MakesField = ({ makes }) => {
         onChange(val);
     }
 
-    return <select style={{ padding: '7px', width: '100%', color: 'rgb(9, 14, 36)', border: '1px solid rgb(218, 222, 237)', lineHeight: '24px', fontSize: '15px', boxShadow: 'rgb(0 0 0 / 5%) 0px 2px 4px' }} value={value} onChange={({ target: { value: val } }) => changeValue(val)}>
+    return <select style={{ padding: '7px', width: '100%', color: 'rgb(9, 14, 36)', border: '1px solid rgb(218, 222, 237)', lineHeight: '24px', fontSize: '15px', boxShadow: 'rgb(0 0 0 / 5%) 0px 2px 4px' }} value={value != null ? value : ''} onChange={({ target: { value: val } }) => changeValue(val)}>
         <option value='' key="0">Select a make</option>
         {makes.map((make, index) => (
             <option value={make.seoName} key={index} id={make.seoName}>{make.name}</option>
@@ -44,8 +44,6 @@ const Extension = ({ makes }) => {
 
 export const getStaticProps = async () => {
     const makesResponse = await getMakes();
-
-    console.log(makesResponse);
 
     return {
         props: {
