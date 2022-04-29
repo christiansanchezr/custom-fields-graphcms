@@ -5,7 +5,7 @@ import { getModelInfo } from "../../services/make-model";
 import { config } from "../../utilities/config";
 
 const ImageField = () => {
-    const { value, onChange, form: { subscribeToFieldState, subscribeToFormState } } = useFieldExtension(); 
+    const { value, onChange, form: { subscribeToFieldState, subscribeToFormState }, context: { environment: { endpoint, authToken }, }, } = useFieldExtension(); 
     const { form: {getState} } = useFormSidebarExtension();
 
     const [ image, setImage ] = useState('');
@@ -34,8 +34,13 @@ const ImageField = () => {
                                 body: `url=${encodeURIComponent(modelResponse.imageMedium)}`
                             });
                             const uploadAssetResponse = await uploadAsset.json();
-                            console.log(uploadAssetResponse);
-                            changeAsset(uploadAssetResponse);
+                            const refetchedAsset = await fetchAsset({
+                             id: uploadAssetResponse.id,
+                             endpoint,
+                             authToken,
+                            }).then((r) => r.json());
+                            console.log({ uploadedAsset, refetchedAsset });
+                            changeAsset(refetchedAsset.data.asset);
                         }
                     }
                 },
@@ -65,7 +70,41 @@ const ImageField = () => {
     </div>
 }
 
-
+function fetchAsset({ id, endpoint, authToken }) {
+  const query = `query uploadedAsset($id: ID!) {
+    asset(where: {id: $id}) {
+      __typename
+      id
+      stage
+      updatedAt
+      handle
+      fileName
+      mimeType
+      width
+      height
+      size
+      url
+      documentInStages(includeCurrent: true) {
+        id
+        stage
+        updatedAt
+      }
+    }
+  }`;
+  return fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${authToken}`,
+    },
+    body: JSON.stringify({
+      query,
+      variables: {
+        id,
+      },
+    }),
+  });
+}
 
 const ModelsFieldDeclaration = {
     extensionType: 'field',
